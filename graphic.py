@@ -8,6 +8,7 @@ centerx = 400
 centery = 300
 magnification = 2
 
+#Create GUI and call environment
 def mainGraphic():
     global centerx, centery, magnification
     carcenter, destination, edge = readFile("case01.txt")
@@ -42,6 +43,7 @@ def mainGraphic():
     pygame.quit()
     quit()
 
+#Read wall boundary
 def readFile(file):
     try:
         string = ""
