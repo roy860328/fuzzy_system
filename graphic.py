@@ -37,7 +37,6 @@ def mainGraphic():
         destination.draw(gameDisplay)
         car.draw(gameDisplay)
         edge.draw(gameDisplay)
-        pygame.draw.line(gameDisplay, (0, 0, 255), (0, 0), (200, 100))
 
         clock.tick(30)
     pygame.quit()
