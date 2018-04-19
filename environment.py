@@ -5,7 +5,7 @@ import pygame
 import math
 import fuzzy_system
 import lineIntersectPoint
-
+import time
 #Car object with draw the car and obstacleDistance
 class Car(object):
     def __init__(self, x, y, degree, magnification, edge):
@@ -16,7 +16,7 @@ class Car(object):
         self.radius = 3 * magnification
         #steeringWheel moment angle
         self.steeringWheel = 10
-        self.b = 2 * self.radius
+        self.b = self.radius/4
 
         self.edge = edge
         self.detectRadius = 50 * magnification
@@ -77,21 +77,28 @@ class Car(object):
 
     def _carMove(self):
 
-        print(self.straight, self.right, self.left)
+        print(self.straight, self.right, self.left, self.degree)
+        # print(self.degree, self.steeringWheel)
         #reset steeringWheel by fuzzy system
         steeringWheel = fuzzy_system.fuzzy_System_Return_Angle(self.straight, self.right, self.left)
         self._setSteeringWheelAngle(steeringWheel)
-        
-        self.x = self.x + math.cos(math.radians(self.degree) + math.radians(self.steeringWheel)) +\
+        # x = math.radians(180)
+        # x = math.cos(math.pi/2)
+        time.sleep(0.1)
+        self.x = self.x + math.cos(math.radians(self.degree + self.steeringWheel)) +\
                  math.sin(math.radians(self.degree)) * math.sin(math.radians(self.steeringWheel))
-        self.y = self.y - math.sin(math.radians(self.degree) + math.radians(self.steeringWheel)) + \
-                 math.sin(math.radians(self.degree)) * math.cos(math.radians(self.steeringWheel))
+        self.y = self.y - (math.sin(math.radians(self.degree + self.steeringWheel)) + \
+                 math.sin(math.radians(self.steeringWheel)) * math.cos(math.radians(self.degree)))/3
 
-        temp = self.degree - math.asin(2*math.sin(math.radians(self.steeringWheel))/self.b)
-        if temp > -90 and temp < 270:
-            self.degree = temp
+        self.degree = self.degree - math.asin(2*math.sin(math.radians(self.steeringWheel))/self.b)
+        # if -90 < temp and temp < 270:
+        #     self.degree = temp
 
     def _setSteeringWheelAngle(self, steeringWheel):
+        if steeringWheel > 40:
+            steeringWheel = 40
+        elif steeringWheel < -40:
+            steeringWheel = -40
         self.steeringWheel = steeringWheel
     
 #The end of the car have to arrive
