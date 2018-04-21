@@ -44,6 +44,9 @@ class Car(object):
         pygame.draw.line(gameDisplay, (0, 255, 0), (self.x, self.y),
                          (IntersectPointX, IntersectPointY))
 
+    def getCar_X_Y(self):
+        return self.x, self.y
+
     def _sensorDeal(self, degree):
         pointx, pointy = self._setInitialLinePosition(degree)
         IntersectPointX, IntersectPointY = self._findIntersectPoint(pointx, pointy)
@@ -110,7 +113,13 @@ class Destination(object):
         self.rangex = rangex
         self.rangey = rangey
     def draw(self, gameDisplay):
+        #self.positionx, self.positiony are the coordinates of the upper left hand corner
         pygame.draw.rect(gameDisplay, (0, 0, 0), [self.positionx, self.positiony, self.rangex, self.rangey])
+    def detectCarCollision(self, CarX, CarY):
+        if (self.positionx < CarX and CarX < self.positionx+self.rangex)\
+            and (self.positiony > CarY and CarY > self.positiony+self.rangey):
+            return True
+        return False
 
 #Draw the wall
 class Edge(object):

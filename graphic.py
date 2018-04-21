@@ -34,9 +34,12 @@ def mainGraphic():
         pygame.display.update()
         gameDisplay.fill((255, 255, 255))
 
-        destination.draw(gameDisplay)
-        car.draw(gameDisplay)
-        edge.draw(gameDisplay)
+        if destination.detectCarCollision(car.getCar_X_Y()[0], car.getCar_X_Y()[1]):
+            showWinGraphic(gameDisplay)
+        else:
+            destination.draw(gameDisplay)
+            car.draw(gameDisplay)
+            edge.draw(gameDisplay)
 
         clock.tick(30)
     pygame.quit()
@@ -66,5 +69,13 @@ def readFile(file):
     return np.array(carcenter, dtype=int), \
            np.array(destination, dtype=int), \
            np.array(edge, dtype=int)
+
+def showWinGraphic(gameDisplay):
+    largeText = pygame.font.Font('freesansbold.ttf', 115)
+    textSurface = largeText.render("Win", True, (255, 0, 0))
+    textSurface.get_rect().center = ((centerx / 2), (centery / 2))
+    gameDisplay.blit(textSurface, textSurface.get_rect())
+    pygame.display.update()
+
 
 mainGraphic()
