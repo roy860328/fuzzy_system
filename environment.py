@@ -77,20 +77,21 @@ class Car(object):
 
     def _carMove(self):
 
-        print(self.straight, self.right, self.left, self.degree)
-        # print(self.degree, self.steeringWheel)
+        print(self.straight, self.right, self.left, self.degree, self.steeringWheel)
         #reset steeringWheel by fuzzy system
         steeringWheel = fuzzy_system.fuzzy_System_Return_Angle(self.straight, self.right, self.left)
         self._setSteeringWheelAngle(steeringWheel)
+        # print(self.degree, self.steeringWheel)
         # x = math.radians(180)
         # x = math.cos(math.pi/2)
-        time.sleep(0.1)
+        time.sleep(0.01)
         self.x = self.x + math.cos(math.radians(self.degree + self.steeringWheel)) +\
                  math.sin(math.radians(self.degree)) * math.sin(math.radians(self.steeringWheel))
         self.y = self.y - (math.sin(math.radians(self.degree + self.steeringWheel)) + \
                  math.sin(math.radians(self.steeringWheel)) * math.cos(math.radians(self.degree)))/3
-
-        self.degree = self.degree - math.asin(2*math.sin(math.radians(self.steeringWheel))/self.b)
+        x = math.sin(math.radians(self.steeringWheel))
+        math.asin(2 * math.sin(math.radians(self.steeringWheel)) / self.b)
+        self.degree = self.degree - math.asin(2*math.sin(math.radians(self.steeringWheel))/self.b)*2
         # if -90 < temp and temp < 270:
         #     self.degree = temp
 

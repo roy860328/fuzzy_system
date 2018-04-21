@@ -38,14 +38,14 @@ class Fuzzifier(object):
             scale = -1
             mu = (-2*right/5 + 4.2)
         # Medium
-        elif 12 < right and right <= 20:
+        elif 12 < right and right <= 15:
             scale = 0
             mu = (2*right/25 - 0.6)
-        elif 20 < right and right <= 24:
+        elif 15 < right and right <= 20:
             scale = 0
             mu = (-1*right/8 + 7/2)
         #Large
-        elif 24 < right and right <= 32:
+        elif 20 < right and right <= 30:
             scale = 1
             mu = (1*right/16 - 1)
         elif 30 < right:
@@ -64,14 +64,14 @@ class Fuzzifier(object):
         elif 12 < left and left <= 20:
             scale = 0
             mu = (2 * left / 25 - 0.6)
-        elif 20 < left and left <= 24:
+        elif 20 < left and left <= 35:
             scale = 0
             mu = (-1 * left / 8 + 7 / 2)
         # Large
-        elif 24 < left and left <= 32:
+        elif 35 < left and left <= 40:
             scale = 1
             mu = (1 * left / 16 - 1)
-        elif 30 < left:
+        elif 45 < left:
             scale = 1
             mu = 1
         self.d3scale, self.d3mu = scale, mu
@@ -101,8 +101,15 @@ class Fuzzifier(object):
             else:
                 steeringWheel = 1*self.d1mu*20 - 40
         return steeringWheel
+
+fuzzifier = Fuzzifier()
 def fuzzy_System_Return_Angle(straight, right, left):
-    fuzzifier = Fuzzifier()
+    if straight > 300:
+        straight = 0
+    if right > 300:
+        right = 0
+    if left > 300:
+        left = 0
     steeringWheel = fuzzifier.run(straight, right, left)
 
     # print(steeringWheel)
