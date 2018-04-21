@@ -15,7 +15,7 @@ class Car(object):
         self.degree = degree
         self.radius = 3 * magnification
         #steeringWheel moment angle
-        self.steeringWheel = 10
+        self.steeringWheel = 0
         self.b = self.radius/4
 
         self.edge = edge
@@ -23,6 +23,9 @@ class Car(object):
         self.straight = 50 * magnification
         self.right = 50 * magnification
         self.left = 50 * magnification
+
+        self.train4D = open("train4D.txt", 'w')
+        self.train6D = open("train6D.txt", 'w')
 
     def draw(self, gameDisplay):
         self._carMove()
@@ -79,24 +82,25 @@ class Car(object):
         return IntersectPointX, IntersectPointY
 
     def _carMove(self):
-
-        print(self.straight, self.right, self.left, self.degree, self.steeringWheel)
+        if self.straight >= 100:
+            self.straight = 0
+        if self.right >= 100:
+            self.right = 0
+        if self.left >= 100:
+            self.left = 0
+        print(self.x, self.y, self.straight, self.right, self.left, self.steeringWheel)
+        self.outputTxtFile()
         #reset steeringWheel by fuzzy system
         steeringWheel = fuzzy_system.fuzzy_System_Return_Angle(self.straight, self.right, self.left)
         self._setSteeringWheelAngle(steeringWheel)
-        # print(self.degree, self.steeringWheel)
-        # x = math.radians(180)
-        # x = math.cos(math.pi/2)
+
         time.sleep(0.01)
         self.x = self.x + math.cos(math.radians(self.degree + self.steeringWheel)) +\
                  math.sin(math.radians(self.degree)) * math.sin(math.radians(self.steeringWheel))
         self.y = self.y - (math.sin(math.radians(self.degree + self.steeringWheel)) + \
                  math.sin(math.radians(self.steeringWheel)) * math.cos(math.radians(self.degree)))/3
-        x = math.sin(math.radians(self.steeringWheel))
-        math.asin(2 * math.sin(math.radians(self.steeringWheel)) / self.b)
+
         self.degree = self.degree - math.asin(2*math.sin(math.radians(self.steeringWheel))/self.b)*2
-        # if -90 < temp and temp < 270:
-        #     self.degree = temp
 
     def _setSteeringWheelAngle(self, steeringWheel):
         if steeringWheel > 40:
@@ -104,7 +108,11 @@ class Car(object):
         elif steeringWheel < -40:
             steeringWheel = -40
         self.steeringWheel = steeringWheel
-    
+
+    def outputTxtFile(self):
+        self.train4D.write(' '.join((str(self.straight/2), str(self.right/2), str(self.left/2), str(self.steeringWheel), "\n")))
+        self.train6D.write(' '.join((str((self.x-400)/2), str((-(self.y-300))/2), str(self.straight/2), str(self.right/2), str(self.left/2), str(self.steeringWheel), "\n")))
+
 #The end of the car have to arrive
 class Destination(object):
     def __init__(self, positionx, positiony, rangex, rangey):

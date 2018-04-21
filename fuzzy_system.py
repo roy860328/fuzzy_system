@@ -76,6 +76,7 @@ class Fuzzifier(object):
             mu = 1
         self.d3scale, self.d3mu = scale, mu
     def defuzzifier(self):
+        steeringWheel = 0
         #left large distance
         if self.d3scale == 1:
             steeringWheel = -1*self.d3mu*50
