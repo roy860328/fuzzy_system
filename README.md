@@ -5,6 +5,6 @@ use fuzzy system to drive car
 
 https://imgur.com/UEfdwyL
 
-'''
+```
 python3 graphic.py
-'''
+```
