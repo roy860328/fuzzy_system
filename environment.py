@@ -3,6 +3,7 @@
 
 import pygame
 import math
+import numpy
 import fuzzy_system
 import lineIntersectPoint
 import time
@@ -16,7 +17,7 @@ class Car(object):
         self.radius = 3 * magnification
         #steeringWheel moment angle
         self.steeringWheel = 0
-        self.b = self.radius/4
+        self.b = self.radius*2
 
         self.edge = edge
         self.detectRadius = 50 * magnification
@@ -88,7 +89,7 @@ class Car(object):
             self.right = 0
         if self.left >= 100:
             self.left = 0
-        print(self.x, self.y, self.straight, self.right, self.left, self.steeringWheel)
+
         self.outputTxtFile()
         #reset steeringWheel by fuzzy system
         steeringWheel = fuzzy_system.fuzzy_System_Return_Angle(self.straight, self.right, self.left)
@@ -98,9 +99,10 @@ class Car(object):
         self.x = self.x + math.cos(math.radians(self.degree + self.steeringWheel)) +\
                  math.sin(math.radians(self.degree)) * math.sin(math.radians(self.steeringWheel))
         self.y = self.y - (math.sin(math.radians(self.degree + self.steeringWheel)) + \
-                 math.sin(math.radians(self.steeringWheel)) * math.cos(math.radians(self.degree)))/3
+                 math.sin(math.radians(self.steeringWheel)) * math.cos(math.radians(self.degree)))
 
-        self.degree = self.degree - math.asin(2*math.sin(math.radians(self.steeringWheel))/self.b)*2
+        self.degree = self.degree - math.degrees(math.asinh(2*math.sin(math.radians(self.steeringWheel))/self.b))
+
 
     def _setSteeringWheelAngle(self, steeringWheel):
         if steeringWheel > 40:

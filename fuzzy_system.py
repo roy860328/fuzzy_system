@@ -25,7 +25,7 @@ class Fuzzifier(object):
             scale = 0
             mu = 0
         #Large
-        elif 25 < straight:
+        else:#elif 25 < straight:
             scale = 1
             mu = 1
         self.d1scale, self.d1mu = scale, mu
@@ -48,7 +48,7 @@ class Fuzzifier(object):
         elif 20 < right and right <= 30:
             scale = 1
             mu = (1*right/16 - 1)
-        elif 30 < right:
+        else:#elif 30 < right:
             scale = 1
             mu = 1
         self.d2scale, self.d2mu = scale, mu
@@ -71,7 +71,7 @@ class Fuzzifier(object):
         elif 35 < left and left <= 40:
             scale = 1
             mu = (1 * left / 16 - 1)
-        elif 45 < left:
+        else:#elif 45 < left:
             scale = 1
             mu = 1
         self.d3scale, self.d3mu = scale, mu
