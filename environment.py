@@ -7,11 +7,13 @@ import numpy
 import fuzzy_system
 import lineIntersectPoint
 import time
+from pygame import gfxdraw
 #Car object with draw the car and obstacleDistance
 class Car(object):
     def __init__(self, x, y, degree, magnification, edge):
         self.x = x
         self.y = y
+        self.xytrack = []
         #Coordinate angle
         self.degree = degree
         self.radius = 3 * magnification
@@ -29,7 +31,7 @@ class Car(object):
         self.train6D = open("train6D.txt", 'w')
 
     def draw(self, gameDisplay):
-        self._carMove()
+        self._carMove(gameDisplay)
 
         pygame.draw.circle(gameDisplay, (255, 0, 0), (int(self.x), int(self.y)), self.radius)
 
@@ -82,7 +84,7 @@ class Car(object):
 
         return IntersectPointX, IntersectPointY
 
-    def _carMove(self):
+    def _carMove(self, gameDisplay):
         if self.straight >= 100:
             self.straight = 0
         if self.right >= 100:
@@ -103,6 +105,11 @@ class Car(object):
 
         self.degree = self.degree - math.degrees(math.asinh(2*math.sin(math.radians(self.steeringWheel))/self.b))
 
+        self.xytrack.append([int(self.x), int(self.y)])
+        print(self.xytrack)
+        for i in self.xytrack:
+            print(i)
+            gfxdraw.pixel(gameDisplay, i[0], i[1], (255, 0, 0))
 
     def _setSteeringWheelAngle(self, steeringWheel):
         if steeringWheel > 40:
